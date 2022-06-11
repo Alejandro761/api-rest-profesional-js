@@ -70,3 +70,13 @@ const getMoviesByCategory = async (id) => {
     // const movies = data.results;
     moviesForEach(data.results, genericSection);
 }
+
+const getMoviesBySearch = async (query) => {
+    const {data} = await api('search/movie', {
+        params: {
+            query, //como el parametro de la funcion lo llamamos igual que el query parameter que es requerido, entonces no hace falta poner que query: query, simplemente con ponerle query ya lo entiende  
+        },
+    });
+    // const movies = data.results;
+    moviesForEach(data.results, genericSection);
+}
