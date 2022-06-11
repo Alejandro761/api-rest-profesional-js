@@ -10,8 +10,9 @@ const api = axios.create({
 
 const getTrendingMoviesPreview = async () => {
     const {data} = await api('trending/movie/day');
-
     const movies = data.results;
+
+    trendingPreviewList.innerHTML = '';
     movies.forEach(movie => {
         const trendingPreviewList = document.querySelector('#trendingPreview .trendingPreview-movieList'); //primro debemos acceder al contenedor que tine el id trendingPreview y despues accedemos a la clase del articulo
         
@@ -30,9 +31,9 @@ const getTrendingMoviesPreview = async () => {
 
 const getCategoriesPreview = async () => {
     const {data} = await api('genre/movie/list');
-
     const categories = data.genres;
 
+    categoriesPreviewList.innerHTML = ''
     categories.forEach(category => {
         const categoriesPreviewList = document.querySelector('#categoriesPreview .categoriesPreview-list');
         
