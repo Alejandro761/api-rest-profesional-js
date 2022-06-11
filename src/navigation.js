@@ -27,6 +27,9 @@ function navigator() {
     } else {
         homePage();
     }
+
+    document.body.scrollTop = 0; //para que el scroll se mantenga arriba cada que entre a una página
+    document.documentElement.scrollTop = 0; //lo mismo que arriba pero para otros navegadores
 }
 
 function homePage() {
@@ -67,10 +70,11 @@ function categoriesPage() {
     const [category, categoryData] = location.hash.split('='); // en los corchetes [], vas a poner el nombre de la variable en donde se van a guardar los elementos del array. Osea, al dividirse el hash en un array, podemos guardar cada elemento del array en una variable y estas son las que están dentro de los '[]'
     console.log(category);
     console.log(categoryData); //este guarda el nombre de la categoria y su id
-    const [categoryId,categoryName] = categoryData.split('-'); //si no ponemos un nombre al otro elemento (ej: [,elemento2] ) no mostrara error, simplemente dara por hecho que no asignamos ese elemento a una varibale
+    let [categoryId,categoryName] = categoryData.split('-'); //si no ponemos un nombre al otro elemento (ej: [,elemento2] ) no mostrara error, simplemente dara por hecho que no asignamos ese elemento a una varibale
     console.log(categoryId);
+    categoryName = decodeURI(categoryName); //una categoría que contiene un espacio en su título nos aparecera '%20', esto es porque un string fue codificado para ser parte de un url, y para reemplazarlo podemos usar decodeURI. mas info en: https://platzi.com/comentario/3600092/
 
-    headerCategoryTitle.innerHTML = categoryName;
+    headerCategoryTitle.innerHTML = categoryName; 
     getMoviesByCategory(categoryId);
 }
 function searchPage() {
