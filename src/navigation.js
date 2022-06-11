@@ -63,6 +63,15 @@ function categoriesPage() {
     categoriesPreviewSection.classList.add('inactive');
     genericSection.classList.remove('inactive');
     movieDetailSection.classList.add('inactive');
+
+    const [category, categoryData] = location.hash.split('='); // en los corchetes [], vas a poner el nombre de la variable en donde se van a guardar los elementos del array. Osea, al dividirse el hash en un array, podemos guardar cada elemento del array en una variable y estas son las que están dentro de los '[]'
+    console.log(category);
+    console.log(categoryData); //este guarda el nombre de la categoria y su id
+    const [categoryId,categoryName] = categoryData.split('-'); //si no ponemos un nombre al otro elemento (ej: [,elemento2] ) no mostrara error, simplemente dara por hecho que no asignamos ese elemento a una varibale
+    console.log(categoryId);
+
+    headerCategoryTitle.innerHTML = categoryName;
+    getMoviesByCategory(categoryId);
 }
 function searchPage() {
     console.log('Search');
