@@ -112,6 +112,10 @@ function movieDetailsPage() {
     categoriesPreviewSection.classList.add('inactive');
     genericSection.classList.add('inactive');
     movieDetailSection.classList.remove('inactive');
+
+    const [, movieID] = location.hash.split('='); //si no ponemos un nombre al otro elemento (ej: [,elemento2] ) no mostrara error, simplemente dara por hecho que no asignamos ese elemento a una varibale
+    console.log(movieID);
+    getMovieById(movieID); 
 }
 function trendsPage() {
     console.log('Trends');

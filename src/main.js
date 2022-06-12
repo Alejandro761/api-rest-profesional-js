@@ -14,6 +14,9 @@ const moviesForEach = (movies, container) => {
     movies.forEach(movie => {
         const movieContainer = document.createElement('div');
         movieContainer.classList.add('movie-container');
+        movieContainer.addEventListener('click', () => {
+            location.hash = '#movie=' + movie.id;
+        })
 
         const movieImg = document.createElement('img');
         movieImg.classList.add('movie-container');
@@ -86,4 +89,18 @@ const getTrendingMovies = async () => {
     const movies = data.results;
 
     moviesForEach(movies, genericSection);
+}
+
+const getMovieById = async (id) => {
+    const {data: movie} = await api(`movie/${id}`); //si queremos cambiarle el nombre a la variable entonces le ponemos 'data:' porque ese es el nombre que tiene el objeto por defecto
+
+    const movieImgURL = 'https://image.tmdb.org/t/p/w500' +  movie.poster_path;
+    console.log(movieImgURL);
+    headerSection.style.background = `linear-gradient(180deg, rgba(0, 0, 0, 0.35) 19.27%, rgba(0, 0, 0, 0) 29.17%),
+    url(${movieImgURL})`; 
+    movieDetailTitle.textContent = movie.title;
+    movieDetailDescription.textContent = movie.overview;
+    movieDetailScore.textContent = movie.vote_average;
+
+    createCategories(movie.genres, movieDetailList);
 }
