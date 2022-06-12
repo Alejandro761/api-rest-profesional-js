@@ -80,3 +80,10 @@ const getMoviesBySearch = async (query) => {
     // const movies = data.results;
     moviesForEach(data.results, genericSection);
 }
+
+const getTrendingMovies = async () => {
+    const {data} = await api('trending/movie/day');
+    const movies = data.results;
+
+    moviesForEach(movies, genericSection);
+}
