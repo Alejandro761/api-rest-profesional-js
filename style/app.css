@@ -105,6 +105,22 @@ button {
   cursor: pointer;
 }
 
+.movie-container--loading {
+  background-color: var(--purple-light-2);
+  border-radius: 8px;
+  height: 225px;
+  width: 150px;
+  margin-bottom: 15px;
+}
+
+.category-container--loading {
+  background: var(--purple-light-2);
+  border-radius: 8px;
+  height: 25px;
+  width: 150px;
+  margin-bottom: 15px;
+}
+
 .movie-img {
   border-radius: 8px;
 }
