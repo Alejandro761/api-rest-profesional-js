@@ -207,7 +207,7 @@ button {
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap;
-  /* height: 241px; */
+  height: 241px;
   padding-left: 24px;
   padding-bottom: 16px;
 }
@@ -287,6 +287,7 @@ button {
 
 .genericList-container .movie-img {
   width: 100%;
+  min-height: 175px;
 }
 
 

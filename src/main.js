@@ -30,7 +30,7 @@ const moviesForEach = (movies, container, lazyLoad = false) => {
         })
 
         const movieImg = document.createElement('img');
-        movieImg.classList.add('movie-container');
+        movieImg.classList.add('movie-img');
         movieImg.setAttribute('alt', movie.title);
         if(lazyLoad){
             movieImg.setAttribute('data-image', 'https://image.tmdb.org/t/p/w300' + movie.poster_path);
@@ -40,6 +40,9 @@ const moviesForEach = (movies, container, lazyLoad = false) => {
         if(lazyLoad){
             lazyLoader.observe(movieImg);
         }
+        movieImg.addEventListener('error', () => {
+            movieImg.setAttribute('src', 'https://w7.pngwing.com/pngs/572/603/png-transparent-logo-brand-com-student-creative-slate-text-logo-film.png')
+        })
 
         movieContainer.appendChild(movieImg);
         container.appendChild(movieContainer);
@@ -89,7 +92,7 @@ const getMoviesByCategory = async (id) => {
         }
     });
     // const movies = data.results;
-    moviesForEach(data.results, genericSection);
+    moviesForEach(data.results, genericSection, true);
 }
 
 const getMoviesBySearch = async (query) => {
