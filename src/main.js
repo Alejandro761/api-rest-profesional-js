@@ -20,8 +20,10 @@ const lazyLoader = new IntersectionObserver((entries) => {
     })
 });
 
-const moviesForEach = (movies, container, lazyLoad = false) => {
-    container.innerHTML = '';
+const moviesForEach = (movies, container, {lazyLoad = false, clean = true} = {}) => {
+    if(clean) {
+        container.innerHTML = '';
+    }
     movies.forEach(movie => {
         const movieContainer = document.createElement('div');
         movieContainer.classList.add('movie-container');
@@ -105,11 +107,47 @@ const getMoviesBySearch = async (query) => {
     moviesForEach(data.results, genericSection);
 }
 
+let btnCount = 0;
+
 const getTrendingMovies = async () => {
     const {data} = await api('trending/movie/day');
     const movies = data.results;
 
     moviesForEach(movies, genericSection);
+
+    const btnLoadMore = document.createElement('button');
+    btnLoadMore.innerText = 'Cargar mas';
+    btnLoadMore.addEventListener('click', getPaginatedTrendingMovies );
+    genericSection.appendChild(btnLoadMore);
+    btnLoadMore.classList.add(`btn${btnCount}`);
+}
+
+let page = 1;
+
+const getPaginatedTrendingMovies = async () => {
+    deleteButton(btnCount);
+
+    page++;
+    const {data} = await api('trending/movie/day', {
+        params: {
+            page,
+        },
+    });
+
+    moviesForEach(data.results, genericSection, {clean: false, lazyLoad: true});
+
+    const btnLoadMore = document.createElement('button');
+    btnLoadMore.innerText = 'Cargar mas';
+    btnLoadMore.addEventListener('click', getPaginatedTrendingMovies );
+    genericSection.appendChild(btnLoadMore);
+    btnLoadMore.classList.add(`btn${btnCount}`);
+}
+
+const deleteButton = (count) => {
+    const oldBtn = document.querySelector(`.btn${count}`);
+    oldBtn.classList.add('inactive');
+    console.log('que pedo?');
+    btnCount++;
 }
 
 const getMovieById = async (id) => {
