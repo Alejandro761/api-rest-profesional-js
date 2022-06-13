@@ -115,32 +115,38 @@ const getTrendingMovies = async () => {
 
     moviesForEach(movies, genericSection);
 
-    const btnLoadMore = document.createElement('button');
-    btnLoadMore.innerText = 'Cargar mas';
-    btnLoadMore.addEventListener('click', getPaginatedTrendingMovies );
-    genericSection.appendChild(btnLoadMore);
-    btnLoadMore.classList.add(`btn${btnCount}`);
+    // const btnLoadMore = document.createElement('button');
+    // btnLoadMore.innerText = 'Cargar mas';
+    // btnLoadMore.addEventListener('click', getPaginatedTrendingMovies );
+    // genericSection.appendChild(btnLoadMore);
+    // btnLoadMore.classList.add(`btn${btnCount}`);
 }
 
-let page = 1;
 
 const getPaginatedTrendingMovies = async () => {
-    deleteButton(btnCount);
+    const {scrollTop, scrollHeight, clientHeight} = document.documentElement;
 
-    page++;
-    const {data} = await api('trending/movie/day', {
-        params: {
-            page,
-        },
-    });
+    const scrollIsBottom = (scrollTop + clientHeight) >= (scrollHeight - 15); //scrollTop es el scroll que hemos a la pagina, clientHeight es el tamaño total del height, y scrollHeight es la suma de ambos o el numero de scroll total que puede hacer el usuario
 
-    moviesForEach(data.results, genericSection, {clean: false, lazyLoad: true});
+    if (scrollIsBottom){
+        page++;
+        const {data} = await api('trending/movie/day', {
+            params: {
+                page,
+            },
+        });
+    
+        moviesForEach(data.results, genericSection, {clean: false, lazyLoad: true});
+    }
+    
+    // deleteButton(btnCount);
 
-    const btnLoadMore = document.createElement('button');
-    btnLoadMore.innerText = 'Cargar mas';
-    btnLoadMore.addEventListener('click', getPaginatedTrendingMovies );
-    genericSection.appendChild(btnLoadMore);
-    btnLoadMore.classList.add(`btn${btnCount}`);
+
+    // const btnLoadMore = document.createElement('button');
+    // btnLoadMore.innerText = 'Cargar mas';
+    // btnLoadMore.addEventListener('click', getPaginatedTrendingMovies );
+    // genericSection.appendChild(btnLoadMore);
+    // btnLoadMore.classList.add(`btn${btnCount}`);
 }
 
 const deleteButton = (count) => {
