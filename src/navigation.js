@@ -1,3 +1,4 @@
+let maxPage;
 let page = 1;
 let infiteScroll;
 
@@ -90,6 +91,8 @@ function categoriesPage() {
 
     headerCategoryTitle.innerHTML = categoryName; 
     getMoviesByCategory(categoryId);
+
+    infiteScroll = getPaginatedCategoryMovies;
 }
 function searchPage() {
     console.log('Search');

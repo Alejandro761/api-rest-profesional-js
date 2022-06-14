@@ -112,6 +112,7 @@ let btnCount = 0;
 const getTrendingMovies = async () => {
     const {data} = await api('trending/movie/day');
     const movies = data.results;
+    maxPage = data.total_pages;
 
     moviesForEach(movies, genericSection);
 
@@ -122,13 +123,14 @@ const getTrendingMovies = async () => {
     // btnLoadMore.classList.add(`btn${btnCount}`);
 }
 
-
 const getPaginatedTrendingMovies = async () => {
     const {scrollTop, scrollHeight, clientHeight} = document.documentElement;
 
     const scrollIsBottom = (scrollTop + clientHeight) >= (scrollHeight - 15); //scrollTop es el scroll que hemos a la pagina, clientHeight es el tamaño total del height, y scrollHeight es la suma de ambos o el numero de scroll total que puede hacer el usuario
+    
+    const pageIsNotMax = page < maxPage;
 
-    if (scrollIsBottom){
+    if (scrollIsBottom && pageIsNotMax) {
         page++;
         const {data} = await api('trending/movie/day', {
             params: {
@@ -147,6 +149,26 @@ const getPaginatedTrendingMovies = async () => {
     // btnLoadMore.addEventListener('click', getPaginatedTrendingMovies );
     // genericSection.appendChild(btnLoadMore);
     // btnLoadMore.classList.add(`btn${btnCount}`);
+}
+
+const getPaginatedCategoryMovies = async (id) => {
+    const {scrollTop, scrollHeight, clientHeight} = document.documentElement;
+
+    const scrollIsBottom = (scrollTop + clientHeight) >= (scrollHeight - 15); //scrollTop es el scroll que hemos a la pagina, clientHeight es el tamaño total del height, y scrollHeight es la suma de ambos o el numero de scroll total que puede hacer el usuario
+    
+    const pageIsNotMax = page < maxPage;
+
+    if (scrollIsBottom && pageIsNotMax) {
+        page++;
+        const {data} = await api('discover/movie', {
+            params: {
+                with_genres: id,
+                page,
+            },
+        });
+    
+        moviesForEach(data.results, genericSection, {clean: false});
+    }
 }
 
 const deleteButton = (count) => {
