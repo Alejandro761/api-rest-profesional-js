@@ -74,6 +74,8 @@ const moviesForEach = (movies, container, {lazyLoad = false, clean = true, like=
         movieBtn.addEventListener('click', () => {
             movieBtn.classList.toggle('movie-btn--liked'); //si se presiona lo agrega, si se vuelve a presionar se quita, y asi cada vez que le den click
             likeMovie(movie);
+            getLikedMovies();
+            getTrendingMoviesPreview();
         });
             
         movieContainer.appendChild(movieBtn);
