@@ -94,6 +94,7 @@ const getMoviesByCategory = async (id) => {
         }
     });
     // const movies = data.results;
+    maxPage = data.total_pages;
     moviesForEach(data.results, genericSection, true);
 }
 
@@ -104,7 +105,57 @@ const getMoviesBySearch = async (query) => {
         },
     });
     // const movies = data.results;
+    
+    maxPage = data.total_pages;
+    console.log(maxPage);
+
     moviesForEach(data.results, genericSection);
+}
+
+const getPaginatedMoviesBySearch = (query) => {
+    return async function() {
+        const {scrollTop, scrollHeight, clientHeight} = document.documentElement;
+
+        const scrollIsBottom = (scrollTop + clientHeight) >= (scrollHeight - 15); //scrollTop es el scroll que hemos a la pagina, clientHeight es el tamaño total del height, y scrollHeight es la suma de ambos o el numero de scroll total que puede hacer el usuario
+        
+        const pageIsNotMax = page < maxPage;
+    
+        if (scrollIsBottom && pageIsNotMax) {
+            page++;
+            const {data} = await api('search/movie', {
+                params: {
+                    query,
+                    page,
+                },
+            });
+        
+            moviesForEach(data.results, genericSection, {clean: false, lazyLoad: true});
+        }
+    };
+
+    
+}
+
+const getPaginatedMoviesByCategory = (id) => {
+    return async function() {
+        const {scrollTop, scrollHeight, clientHeight} = document.documentElement;
+
+        const scrollIsBottom = (scrollTop + clientHeight) >= (scrollHeight - 15); //scrollTop es el scroll que hemos a la pagina, clientHeight es el tamaño total del height, y scrollHeight es la suma de ambos o el numero de scroll total que puede hacer el usuario
+        
+        const pageIsNotMax = page < maxPage;
+    
+        if (scrollIsBottom && pageIsNotMax) {
+            page++;
+            const {data} = await api('discover/movie', {
+                params: {
+                    with_genres: id,
+                    page,
+                },
+            });
+        
+            moviesForEach(data.results, genericSection, {clean: false, lazyLoad: true});
+        }
+    };
 }
 
 let btnCount = 0;
@@ -149,26 +200,6 @@ const getPaginatedTrendingMovies = async () => {
     // btnLoadMore.addEventListener('click', getPaginatedTrendingMovies );
     // genericSection.appendChild(btnLoadMore);
     // btnLoadMore.classList.add(`btn${btnCount}`);
-}
-
-const getPaginatedCategoryMovies = async (id) => {
-    const {scrollTop, scrollHeight, clientHeight} = document.documentElement;
-
-    const scrollIsBottom = (scrollTop + clientHeight) >= (scrollHeight - 15); //scrollTop es el scroll que hemos a la pagina, clientHeight es el tamaño total del height, y scrollHeight es la suma de ambos o el numero de scroll total que puede hacer el usuario
-    
-    const pageIsNotMax = page < maxPage;
-
-    if (scrollIsBottom && pageIsNotMax) {
-        page++;
-        const {data} = await api('discover/movie', {
-            params: {
-                with_genres: id,
-                page,
-            },
-        });
-    
-        moviesForEach(data.results, genericSection, {clean: false});
-    }
 }
 
 const deleteButton = (count) => {

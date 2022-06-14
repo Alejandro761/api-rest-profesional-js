@@ -92,7 +92,7 @@ function categoriesPage() {
     headerCategoryTitle.innerHTML = categoryName; 
     getMoviesByCategory(categoryId);
 
-    infiteScroll = getPaginatedCategoryMovies;
+    infiteScroll = getPaginatedMoviesByCategory(categoryId);
 }
 function searchPage() {
     console.log('Search');
@@ -113,6 +113,8 @@ function searchPage() {
     const [, query] = location.hash.split('='); //si no ponemos un nombre al otro elemento (ej: [,elemento2] ) no mostrara error, simplemente dara por hecho que no asignamos ese elemento a una varibale
     console.log(query);
     getMoviesBySearch(query)
+
+    infiteScroll = getPaginatedMoviesBySearch(query);
 }
 function movieDetailsPage() {
     console.log('Movie');
