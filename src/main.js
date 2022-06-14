@@ -27,13 +27,22 @@ const moviesForEach = (movies, container, {lazyLoad = false, clean = true} = {})
     movies.forEach(movie => {
         const movieContainer = document.createElement('div');
         movieContainer.classList.add('movie-container');
-        movieContainer.addEventListener('click', () => {
-            location.hash = '#movie=' + movie.id;
-        })
 
         const movieImg = document.createElement('img');
         movieImg.classList.add('movie-img');
         movieImg.setAttribute('alt', movie.title);
+        movieImg.addEventListener('click', () => {
+            location.hash = '#movie=' + movie.id;
+        });
+
+        const movieBtn = document.createElement('button');
+        movieBtn.classList.add('movie-btn');
+        movieBtn.addEventListener('click', () => {
+            movieBtn.classList.toggle('movie-btn--liked'); //si se presiona lo agrega, si se vuelve a presionar se quita, y asi cada vez que le den click
+        });
+        movieContainer.appendChild(movieBtn);
+
+
         if(lazyLoad){
             movieImg.setAttribute('data-image', 'https://image.tmdb.org/t/p/w300' + movie.poster_path);
         } else {
