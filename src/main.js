@@ -12,7 +12,7 @@ const likedMoviesList = () => {
     const item = JSON.parse(localStorage.getItem('liked_movies'));
     let movies;
 
-    if(movies) {
+    if(item) {
         movies = item;
     } else {
         movies = {};
@@ -25,6 +25,7 @@ function likeMovie(movie) {
     const likedMovies = likedMoviesList();
 
     console.log(likedMovies);
+
     if(likedMovies[movie.id]) {
         console.log('la pelicula ya estaba en LS, deberiamos eliminarlo');
         likedMovies[movie.id] = undefined;
@@ -33,7 +34,7 @@ function likeMovie(movie) {
         likedMovies[movie.id] = movie;
     }
 
-    localStorage.setItem('liked_movie', JSON.stringify(likedMovies));
+    localStorage.setItem('liked_movies', JSON.stringify(likedMovies));
 }
 // funciones
 
@@ -47,7 +48,7 @@ const lazyLoader = new IntersectionObserver((entries) => {
     })
 });
 
-const moviesForEach = (movies, container, {lazyLoad = false, clean = true} = {}) => {
+const moviesForEach = (movies, container, {lazyLoad = false, clean = true, like=false} = {}) => {
     if(clean) {
         container.innerHTML = '';
     }
@@ -62,13 +63,19 @@ const moviesForEach = (movies, container, {lazyLoad = false, clean = true} = {})
             location.hash = '#movie=' + movie.id;
         });
 
+        
         const movieBtn = document.createElement('button');
         movieBtn.classList.add('movie-btn');
+        // if(like){
+        //     movieBtn.classList.add('movie-btn--liked'); //para que la lista de fav tenga el corazon ya marcado
+        // }
+        //otra forma para marcar los corazones de fav, ademas tambien lo marca en tendencias:
+        likedMoviesList()[movie.id] && movieBtn.classList.add('movie-btn--liked'); //quiere decir que, la llamr esa funcion retornaremos el objeto con las peliculas, si el id de la pelicula está en el objeto entonces agregara la clase 
         movieBtn.addEventListener('click', () => {
             movieBtn.classList.toggle('movie-btn--liked'); //si se presiona lo agrega, si se vuelve a presionar se quita, y asi cada vez que le den click
             likeMovie(movie);
         });
-
+            
         movieContainer.appendChild(movieBtn);
 
 
@@ -267,4 +274,14 @@ const getRelatedMoviesId = async (id) => {
 
     const relatedMovies = data.results;
     moviesForEach(relatedMovies, relatedMoviesContainer);
+}
+
+const getLikedMovies = () => {
+    const likedMovies = likedMoviesList();
+
+    //object.values, convierte los valores del objeto en arrays
+    const favoritemoviesArray = Object.values(likedMovies);
+    
+    moviesForEach(favoritemoviesArray, likedMoviesListContainer, {lazyLoad: true, clean: true, like: true} );
+    console.log(likedMovies);
 }
