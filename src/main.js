@@ -8,6 +8,33 @@ const api = axios.create({
     },
 });
 
+const likedMoviesList = () => {
+    const item = JSON.parse(localStorage.getItem('liked_movies'));
+    let movies;
+
+    if(movies) {
+        movies = item;
+    } else {
+        movies = {};
+    }
+
+    return movies;
+}
+
+function likeMovie(movie) {
+    const likedMovies = likedMoviesList();
+
+    console.log(likedMovies);
+    if(likedMovies[movie.id]) {
+        console.log('la pelicula ya estaba en LS, deberiamos eliminarlo');
+        likedMovies[movie.id] = undefined;
+    } else {
+        console.log('la pelicula no estaba en LS, deberiamos agregarlo');
+        likedMovies[movie.id] = movie;
+    }
+
+    localStorage.setItem('liked_movie', JSON.stringify(likedMovies));
+}
 // funciones
 
 const lazyLoader = new IntersectionObserver((entries) => {
@@ -39,7 +66,9 @@ const moviesForEach = (movies, container, {lazyLoad = false, clean = true} = {})
         movieBtn.classList.add('movie-btn');
         movieBtn.addEventListener('click', () => {
             movieBtn.classList.toggle('movie-btn--liked'); //si se presiona lo agrega, si se vuelve a presionar se quita, y asi cada vez que le den click
+            likeMovie(movie);
         });
+
         movieContainer.appendChild(movieBtn);
 
 
